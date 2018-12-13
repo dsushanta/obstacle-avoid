@@ -12,22 +12,16 @@ public class DebugCameraController {
 
     private static final Logger log = new Logger(DebugCameraController.class.getName(), Logger.DEBUG);
 
-    private static final int DEFAULT_LEFT_KEY = Input.Keys.A;
-    private static final int DEFAULT_RIGHT_KEY = Input.Keys.D;
-    private static final int DEFAULT_UP_KEY = Input.Keys.W;
-    private static final int DEFAULT_DOWN_KEY = Input.Keys.S;
-    private static final float DEFAULT_MOVE_SPEED = 20.0f;
-    private static final int DEFAULT_ZOOM_IN_KEY = Input.Keys.COMMA;
-    private static final int DEFAULT_ZOOM_OUT_KEY = Input.Keys.PERIOD;
-    private static final int DEFAULT_ZOOM_RESET_KEY = Input.Keys.BACKSPACE;
-    private static final int DEFAULT_ZOOM_LOG_KEY = Input.Keys.ENTER;
-    private static final float DEFAULT_ZOOM_SPEED = 2.0f;
-    private static final float DEFAULT_MAX_ZOOM_IN = 0.20f;
-    private static final float DEFAULT_MAX_ZOOM_OUT = 30f;
-
     private Vector2 position = new Vector2();
     private Vector2 startPosition = new Vector2();
     private float zoom = 1.0f;
+
+    private DebugCameraConfig cameraConfig;
+
+    public DebugCameraController() {
+        cameraConfig = new DebugCameraConfig();
+        log.info("CameraConfig -- "+cameraConfig);
+    }
 
     public void setStartPosition(float x, float y) {
         startPosition.set(x,y);
@@ -44,24 +38,24 @@ public class DebugCameraController {
         if (Gdx.app.getType() != Application.ApplicationType.Desktop)
             return;
         
-        float moveSpeed = DEFAULT_MOVE_SPEED * delta;
-        float zoomSpeed = DEFAULT_ZOOM_SPEED * delta;
+        float moveSpeed = cameraConfig.getMoveSpeed() * delta;
+        float zoomSpeed = cameraConfig.getZoomSpeed() * delta;
         
-        if (Gdx.input.isKeyPressed(DEFAULT_LEFT_KEY))
+        if (cameraConfig.isLeftPressed())
             moveLeft(moveSpeed);
-        else if (Gdx.input.isKeyPressed(DEFAULT_RIGHT_KEY))
+        else if (cameraConfig.isRightPressed())
             moveRight(moveSpeed);
-        else if (Gdx.input.isKeyPressed(DEFAULT_UP_KEY))
+        else if (cameraConfig.isUpPressed())
             moveUP(moveSpeed);
-        else if (Gdx.input.isKeyPressed(DEFAULT_DOWN_KEY))
+        else if (cameraConfig.isDownPressed())
             moveDown(moveSpeed);
-        else if (Gdx.input.isKeyPressed(DEFAULT_ZOOM_IN_KEY))
+        else if (cameraConfig.isZoomInPressed())
             zoomIn(zoomSpeed);
-        else if (Gdx.input.isKeyPressed(DEFAULT_ZOOM_OUT_KEY))
+        else if (cameraConfig.isZoomOutPressed())
             zoomOut(zoomSpeed);
-        else if (Gdx.input.isKeyPressed(DEFAULT_ZOOM_RESET_KEY))
+        else if (cameraConfig.isResetPressed())
             zoomReset();
-        else if (Gdx.input.isKeyPressed(DEFAULT_ZOOM_LOG_KEY))
+        else if (cameraConfig.isLogPressed())
             logDebug();
     }
 
@@ -71,7 +65,7 @@ public class DebugCameraController {
     }
 
     private void setZoom(float zoomValue) {
-        zoom = MathUtils.clamp(zoomValue, DEFAULT_MAX_ZOOM_IN, DEFAULT_MAX_ZOOM_OUT);
+        zoom = MathUtils.clamp(zoomValue, cameraConfig.getMaxZoomIn(), cameraConfig.getMaxZoomOut());
     }
 
     private void zoomReset() {

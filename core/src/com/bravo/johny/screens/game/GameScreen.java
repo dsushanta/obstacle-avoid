@@ -1,18 +1,31 @@
-package com.bravo.johny.screens;
+package com.bravo.johny.screens.game;
 
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.utils.Logger;
+import com.bravo.johny.ObstacleAvoidGame;
+import com.bravo.johny.assets.AssetDescriptors;
 
 public class GameScreen implements Screen {
 
+    private static final Logger log = new Logger(GameScreen.class.getName(), Logger.DEBUG);
+
     private GameController gameController;
     private GameRenderer gameRenderer;
+    private ObstacleAvoidGame game;
+    private AssetManager assetManager;
+
+    public GameScreen(ObstacleAvoidGame game) {
+        this.game = game;
+        assetManager = game.getAssetManager();
+    }
 
     @Override
     public void show() {
         // this is like create. it is used to initialize and load resources
 
         gameController = new GameController();
-        gameRenderer = new GameRenderer(gameController);
+        gameRenderer = new GameRenderer(assetManager, gameController);
     }
 
     @Override

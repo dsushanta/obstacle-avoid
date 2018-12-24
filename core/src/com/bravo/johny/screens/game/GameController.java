@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Logger;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pools;
+import com.bravo.johny.comon.GameManager;
 import com.bravo.johny.config.DifficultyLevel;
 import com.bravo.johny.config.GameConfig;
 import com.bravo.johny.entity.Background;
@@ -24,7 +25,6 @@ public class GameController {
     private float obstacleTimer, scoreTimer;
     private int score;
     private int displayScore;
-    private DifficultyLevel difficultyLevel = DifficultyLevel.MEDIUM;
     private int lives = GameConfig.LIVES_START;
     private Pool<Obstacle> obstaclePool;
     private Background background;
@@ -58,8 +58,10 @@ public class GameController {
         if(isPlayerColliding()) {
             log.info("Collison detected !!!  "+lives);
             lives--;
-            if(isGameOver())
+            if(isGameOver()) {
                 log.debug("GAME OVER !!!");
+                GameManager.INSTANCE.updateHighScore(score);
+            }
             else {
                 restart();
             }
@@ -141,7 +143,7 @@ public class GameController {
 
 //            Obstacle obstacle = new Obstacle();
             Obstacle obstacle = obstaclePool.obtain();
-
+            DifficultyLevel difficultyLevel = GameManager.INSTANCE.getDifficultyLevel();
             obstacle.setYSpeed(difficultyLevel.getObstacleSpeed());
             obstacle.setPosition(obstacleX, obstacleY);
 

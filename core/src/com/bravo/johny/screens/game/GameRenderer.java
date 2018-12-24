@@ -32,18 +32,19 @@ public class GameRenderer implements Disposable {
 
     private OrthographicCamera camera, hudCamera;
     private Viewport viewport, hudViewport;
-    private SpriteBatch batch;
     private BitmapFont font;
     private final GlyphLayout glyphLayout = new GlyphLayout();
     private final AssetManager assetManager;
+    private final SpriteBatch batch;
     private ShapeRenderer renderer;
     private DebugCameraController debugCameraController;
     private final GameController gameController;
     private TextureRegion playerRegion, obstacleRegion, backgroudRegion;
 
-    public GameRenderer(AssetManager assetManager, GameController controller) {
+    public GameRenderer(SpriteBatch batch, AssetManager assetManager, GameController controller) {
         this.assetManager = assetManager;
         gameController = controller;
+        this.batch = batch;
         init();
     }
 
@@ -53,7 +54,6 @@ public class GameRenderer implements Disposable {
         renderer = new ShapeRenderer();
         hudCamera = new OrthographicCamera();
         hudViewport = new FitViewport(GameConfig.HUD_WIDTH, GameConfig.HUD_HEIGHT, hudCamera);
-        batch = new SpriteBatch();
         font = assetManager.get(AssetDescriptors.FONT);
         debugCameraController = new DebugCameraController();
         debugCameraController.setStartPosition(GameConfig.WORLD_CENTER_X, GameConfig.WORLD_CENTER_Y);
@@ -90,7 +90,6 @@ public class GameRenderer implements Disposable {
     @Override
     public void dispose() {
         renderer.dispose();
-        batch.dispose();
     }
 
     public void resize(int width, int height) {

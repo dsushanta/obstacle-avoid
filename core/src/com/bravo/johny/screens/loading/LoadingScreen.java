@@ -11,6 +11,7 @@ import com.bravo.johny.ObstacleAvoidGame;
 import com.bravo.johny.assets.AssetDescriptors;
 import com.bravo.johny.config.GameConfig;
 import com.bravo.johny.screens.game.GameScreen;
+import com.bravo.johny.screens.menu.MenuScreen;
 import com.bravo.johny.utils.GdxUtils;
 
 /**
@@ -46,6 +47,7 @@ public class LoadingScreen extends ScreenAdapter {
 
         assetManager.load(AssetDescriptors.FONT);
         assetManager.load(AssetDescriptors.GAME_PLAY);
+        assetManager.load(AssetDescriptors.UI);
         // halts execution until all assets get loaded
 //        assetManager.finishLoading();
     }
@@ -60,7 +62,7 @@ public class LoadingScreen extends ScreenAdapter {
         draw();
         shapeRenderer.end();
         if(changeScreen)
-            game.setScreen(new GameScreen(game));
+            game.setScreen(new MenuScreen(game));
     }
 
     @Override
@@ -80,7 +82,6 @@ public class LoadingScreen extends ScreenAdapter {
     }
 
     private void update(float delta) {
-        waitMillis(400);
 
         // it returns a number between 0 and 1 indicating how much of asset loading is done
         progress = assetManager.getProgress();

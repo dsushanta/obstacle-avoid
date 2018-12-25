@@ -28,7 +28,7 @@ public class GameScreen implements Screen {
     public void show() {
         // this is like create. it is used to initialize and load resources
 
-        gameController = new GameController();
+        gameController = new GameController(game);
         gameRenderer = new GameRenderer(batch, assetManager, gameController);
     }
 
